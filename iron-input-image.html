@@ -68,22 +68,17 @@ Example:
      * Reset the image's file and informations.
      */
     clear: function() {
+      objectURL = window.URL.revokeObjectURL(this.src);
       this.value = null;
       this.title = this.src = '';
       this.size = 0;
     },
 
     _handleImage: function() {
-      var fReader = new FileReader();
       var file = this.files[0];
-      fReader.readAsDataURL(file);
       this.title = file.name;
       this.size = this._toKo(file.size);
-      fReader.onloadend = (function(self) { 
-        return function(e) { 
-          self.set('src', e.target.result);
-        }; 
-      })(this);
+      this.src = window.URL.createObjectURL(file);
     },
 
     _toKo(size) {
